@@ -1,5 +1,6 @@
 // src/app/page.jsx
 import { Card } from "@/components/ui/card";
+import { Table } from "@/components/ui/table";
 
 export default function Home() {
   const metrics = [
@@ -12,7 +13,15 @@ export default function Home() {
     { id: 7, title: "Morning Tutor Shortage", value: 0 },
     { id: 8, title: "On District List", value: 233 },
   ];
-
+  
+  // Sample data simulating student group tracking
+  const tableHeaders = ["Group Name", "Tutor", "Students Enrolled", "Status", "Attendance Rate"];
+  const tableData = [
+    ["Group JAC-G3-02", "Tutor Name", "4", "Planned", "100%"],
+    ["Group JAC-G3-03", "Jane Doe", "3", "Completed", "90%"],
+    ["Group BAL-G4-01", "John Smith", "5", "Planned", "95%"],
+  ];
+  const tableTotal = ["Total / Average", "-", "12 Students", "3 Active Groups", "95% Avg"];
   return (
     <div className="space-y-8">
       {/* Dashboard Section Header */}
@@ -34,6 +43,17 @@ export default function Home() {
             value={metric.value}
           />
         ))}
+      </div>
+      {/* Reusable Table Section */}
+      <div className="space-y-4 pt-4">
+        <h2 className="text-lg font-bold text-[#101a2b]">
+          Recent Student Groups
+        </h2>
+        <Table 
+          headers={tableHeaders} 
+          data={tableData} 
+          totalRow={tableTotal} 
+        />
       </div>
     </div>
   );
