@@ -30,7 +30,7 @@ export default function Home() {
           Platform Dashboard
         </h1>
         <p className="text-sm text-slate-600 mt-1">
-          Current operational metrics (Hardcoded preview — ready for Supabase sync).
+          Current operational metrics (Preview).
         </p>
       </div>
 
