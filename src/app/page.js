@@ -4,9 +4,13 @@ import { Card } from "@/components/ui/card";
 export default function Home() {
   const metrics = [
     { id: 1, title: "Student Groups", value: 63 },
-    { id: 2, title: "Total Students", value: 412 },
-    { id: 3, title: "Active Tutors", value: 28 },
-    { id: 4, title: "Reports Generated", value: 1250 },
+    { id: 2, title: "Students", value: 238 },
+    { id: 3, title: "Active Tutors", value: 32 },
+    { id: 4, title: "Assigned Groups", value: 63 },
+    { id: 5, title: "Unassigned Groups", value: 0 },
+    { id: 6, title: "Conflicts", value: 0 },
+    { id: 7, title: "Morning Tutor Shortage", value: 0 },
+    { id: 8, title: "On District List", value: 233 },
   ];
 
   return (
@@ -14,10 +18,10 @@ export default function Home() {
       {/* Dashboard Section Header */}
       <div>
         <h1 className="text-2xl font-bold tracking-tight text-[#101a2b]">
-          Overview Dashboard
+          Platform Dashboard
         </h1>
         <p className="text-sm text-slate-600 mt-1">
-          Real-time metric summary synced across your platforms.
+          Current operational metrics (Hardcoded preview — ready for Supabase sync).
         </p>
       </div>
 
