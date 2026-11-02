@@ -15,13 +15,13 @@ export default function Home() {
   ];
   
   // Sample data simulating student group tracking
-  const tableHeaders = ["Group Name", "Tutor", "Students Enrolled", "Status", "Attendance Rate"];
+  const tableHeaders = ["School", "Groups", "Students", "Assigned", "Unassigned", "Conflicts", "Awaiting iReady"];
   const tableData = [
-    ["Group JAC-G3-02", "Tutor Name", "4", "Planned", "100%"],
-    ["Group JAC-G3-03", "Jane Doe", "3", "Completed", "90%"],
-    ["Group BAL-G4-01", "John Smith", "5", "Planned", "95%"],
+    ["Clinton Elementary", "13", "50", "13", "0", "0", "1"],
+    ["Jackson Elementary", "20", "76", "20", "0", "0", "6"],
+    ["Slaughter Elementary", "30", "112", "30", "0", "0", "6"],
   ];
-  const tableTotal = ["Total / Average", "-", "12 Students", "3 Active Groups", "95% Avg"];
+  const tableTotal = ["All Schools", "63", "238", "63", "0", "0", "13"];
   return (
     <div className="space-y-8">
       {/* Dashboard Section Header */}
