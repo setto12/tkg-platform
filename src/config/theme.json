@@ -1,0 +1,20 @@
+{
+  "colors": {
+    "light": {
+      "background": "#faf8f3",
+      "primary": "#101a2b",
+      "accent": "#ffffff",
+      "text": "#101a2b",
+      "headerText": "#ffffff",
+      "card": "#ffffff"
+    },
+    "dark": {
+      "background": "#0b111a",
+      "primary": "#1f2937",
+      "accent": "#3b82f6",
+      "text": "#faf8f3",
+      "headerText": "#ffffff",
+      "card": "#101a2b"
+    }
+  }
+}
