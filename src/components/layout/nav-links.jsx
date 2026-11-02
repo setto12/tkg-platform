@@ -1,7 +1,8 @@
 // src/components/layout/nav-links.jsx
-"use client"; // Ready for client-side routing state if needed later (e.g., active paths)
+"use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const links = [
   { name: "Dashboard", href: "/" },
@@ -9,17 +10,27 @@ const links = [
 ];
 
 export function NavLinks() {
+  const pathname = usePathname();
+
   return (
-    <nav className="flex items-center gap-6 text-sm font-medium">
-      {links.map((link) => (
-        <Link
-          key={link.name}
-          href={link.href}
-          className="hover:opacity-80 transition-opacity"
-        >
-          {link.name}
-        </Link>
-      ))}
+    <nav className="flex items-center gap-2 text-sm font-medium">
+      {links.map((link) => {
+        const isActive = pathname === link.href;
+
+        return (
+          <Link
+            key={link.name}
+            href={link.href}
+            className={`px-4 py-2 rounded-full transition-all duration-200 ${
+              isActive
+                ? "bg-[#ffffff] text-[#101a2b] font-semibold shadow-sm"
+                : "text-white hover:bg-white/10"
+            }`}
+          >
+            {link.name}
+          </Link>
+        );
+      })}
     </nav>
   );
 }
