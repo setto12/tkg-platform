@@ -4,7 +4,6 @@
 import { useState, useEffect, useTransition } from "react";
 import { Card } from "@/components/ui/card";
 import ReportDateSelector from "@/components/ReportDateSelector";
-// Add this inside your ReportsPage component:
 import { useRouter } from "next/navigation";
 
 import {
@@ -23,6 +22,7 @@ import {
 import { supabase } from "@/lib/supabase";
 import { getAvailableDateBounds } from "../services/reportDateRangeService";
 import ReportStandardsList from "@/components/ReportStandardList";
+import ReportStudentDetailsModal from "@/components/ReportStudentDetailsModal";
 
 export default function ReportsPage() {
   const router = useRouter();
@@ -33,6 +33,7 @@ export default function ReportsPage() {
       router.push("/login");
     }
   }, [router]);
+
   const [selectedDate, setSelectedDate] = useState("2026-10-27");
   const [viewMode, setViewMode] = useState("day");
   const [displayMode, setDisplayMode] = useState("percentage");
@@ -44,6 +45,10 @@ export default function ReportsPage() {
   const [attendanceData, setAttendanceData] = useState(null);
   const [exitTicketData, setExitTicketData] = useState(null);
   const [skillStandards, setSkillStandards] = useState([]);
+
+  // Modal State & Raw Filtered Rows State
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentFilteredRows, setCurrentFilteredRows] = useState([]);
 
   const [loading, startTransition] = useTransition();
 
@@ -85,6 +90,9 @@ export default function ReportsPage() {
           }
         }
       });
+
+      // Save filtered rows to state for the modal table
+      setCurrentFilteredRows(filteredRows);
 
       let attData = null;
       let exitData = null;
@@ -142,16 +150,44 @@ export default function ReportsPage() {
           </p>
         </div>
 
-        <ReportDateSelector
-          selectedDate={selectedDate}
-          setSelectedDate={setSelectedDate}
-          viewMode={viewMode}
-          setViewMode={setViewMode}
-          displayMode={displayMode}
-          setDisplayMode={setDisplayMode}
-          minDate={dateBounds.minDate}
-          maxDate={dateBounds.maxDate}
-        />
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+          {/* Detailed Student Attendance Modal Trigger Button */}
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="relative group bg-[#101a2b] text-[#ffffff] px-4 py-2 text-sm font-semibold rounded-lg shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden flex items-center gap-2"
+          >
+            {/* Accent Bar on the Left colored #9d7413 */}
+            <span className="absolute inset-y-0 left-0 w-1 bg-[#9d7413] transform group-hover:w-1.5 transition-all duration-200"></span>
+
+            <span>Detailed Student Attendance</span>
+
+            {/* Icon indicator */}
+            <svg
+              className="w-4 h-4 text-[#9d7413] group-hover:translate-x-0.5 transition-transform"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </button>
+
+          <ReportDateSelector
+            selectedDate={selectedDate}
+            setSelectedDate={setSelectedDate}
+            viewMode={viewMode}
+            setViewMode={setViewMode}
+            displayMode={displayMode}
+            setDisplayMode={setDisplayMode}
+            minDate={dateBounds.minDate}
+            maxDate={dateBounds.maxDate}
+          />
+        </div>
       </div>
 
       {/* Cards Container */}
@@ -202,6 +238,13 @@ export default function ReportsPage() {
           />
         </div>
       </div>
+
+      {/* Reusable Student Details Modal Component */}
+      <ReportStudentDetailsModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        rows={currentFilteredRows}
+      />
     </div>
   );
 }
