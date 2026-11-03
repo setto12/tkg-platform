@@ -8,6 +8,8 @@ export default function ReportDateSelector({
   setViewMode,
   displayMode,
   setDisplayMode,
+  minDate,
+  maxDate,
 }) {
   return (
     <div className="flex flex-wrap items-center gap-3 bg-white p-2 border border-slate-200 rounded-xl shadow-sm">
@@ -49,10 +51,12 @@ export default function ReportDateSelector({
         </span>
       </button>
 
-      {/* Calendar Input */}
+      {/* Constrained Calendar Input */}
       <input
         type="date"
         value={selectedDate}
+        min={minDate}
+        max={maxDate}
         onChange={(e) => setSelectedDate(e.target.value)}
         className="border border-slate-300 rounded-lg px-3 py-1.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
