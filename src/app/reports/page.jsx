@@ -14,15 +14,15 @@ import {
 } from "../services/exitTicketService";
 
 export default function ReportsPage() {
-  const [selectedDate, setSelectedDate] = useState("2026-10-27"); // HTML date format
+  const [selectedDate, setSelectedDate] = useState("2026-10-27");
   const [viewMode, setViewMode] = useState("day"); // 'day' or 'week'
+  const [displayMode, setDisplayMode] = useState("percentage"); // <-- Set default to percentage here
   const [attendanceData, setAttendanceData] = useState(null);
   const [exitTicketData, setExitTicketData] = useState(null);
   const [loading, startTransition] = useTransition();
 
   useEffect(() => {
     startTransition(async () => {
-      // Convert 'YYYY-MM-DD' to 'MM/DD/YYYY' expected by our services
       const [y, m, d] = selectedDate.split("-");
       const formattedDate = `${m}/${d}/${y}`;
 
@@ -42,27 +42,39 @@ export default function ReportsPage() {
     });
   }, [selectedDate, viewMode]);
 
-  // Compute dynamic attendance ratio (Present / Total Students Logged)
+  // --- Attendance Formatting ---
   const totalPresent = attendanceData?.total_present ?? 238;
   const totalStudents = attendanceData?.total_students_count ?? 238;
-  const attendanceDisplay = loading
-    ? "Loading..."
-    : `${totalPresent}/${totalStudents}`;
 
-  // Compute dynamic exit ticket score / percentage
-  const exitScoreDisplay = loading
-    ? "Loading..."
-    : (exitTicketData?.averageScore ?? "100%");
+  let attendanceDisplay = `${totalPresent}/${totalStudents}`;
+  if (displayMode === "percentage" && totalStudents > 0) {
+    const attPct = (totalPresent / totalStudents) * 100;
+    attendanceDisplay = `${attPct.toFixed(1)}%`;
+  }
+
+  // --- Exit Ticket Formatting ---
+  let exitScoreDisplay = exitTicketData?.averageScore ?? "3.0/3";
+  if (displayMode === "percentage") {
+    exitScoreDisplay = exitTicketData?.averagePercentage ?? "100%";
+  }
 
   const reportMetrics = [
-    { id: 1, title: "Attendance", value: attendanceDisplay },
-    { id: 2, title: "Exit Ticket Scores", value: exitScoreDisplay },
+    {
+      id: 1,
+      title: "Attendance",
+      value: loading ? "Loading..." : attendanceDisplay,
+    },
+    {
+      id: 2,
+      title: "Average Exit Ticket Scores",
+      value: loading ? "Loading..." : exitScoreDisplay,
+    },
   ];
 
   return (
     <div className="space-y-8">
-      {/* Section Header & Calendar/View Toolbar */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      {/* Section Header & Toolbar */}
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-[#101a2b]">
             Reports Overview
@@ -73,12 +85,14 @@ export default function ReportsPage() {
           </p>
         </div>
 
-        {/* Reusable Calendar Component */}
+        {/* Reusable Calendar Component with Format Toggle */}
         <ReportDateSelector
           selectedDate={selectedDate}
           setSelectedDate={setSelectedDate}
           viewMode={viewMode}
           setViewMode={setViewMode}
+          displayMode={displayMode}
+          setDisplayMode={setDisplayMode}
         />
       </div>
 

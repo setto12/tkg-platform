@@ -6,9 +6,12 @@ export default function ReportDateSelector({
   setSelectedDate,
   viewMode,
   setViewMode,
+  displayMode,
+  setDisplayMode,
 }) {
   return (
-    <div className="flex items-center gap-3 bg-white p-2 border border-slate-200 rounded-xl shadow-sm">
+    <div className="flex flex-wrap items-center gap-3 bg-white p-2 border border-slate-200 rounded-xl shadow-sm">
+      {/* Day / Week View Mode */}
       <div className="flex bg-slate-100 p-1 rounded-lg text-sm font-medium">
         <button
           onClick={() => setViewMode("day")}
@@ -31,6 +34,20 @@ export default function ReportDateSelector({
           Week
         </button>
       </div>
+
+      {/* Percentage vs Raw Ratio Toggle */}
+      <button
+        onClick={() =>
+          setDisplayMode(displayMode === "ratio" ? "percentage" : "ratio")
+        }
+        className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-medium rounded-lg transition-all"
+        title="Toggle display format between Ratio and Percentage"
+      >
+        Format:{" "}
+        <span className="font-bold text-slate-900">
+          {displayMode === "ratio" ? "Raw Ratio" : "Percentage (%)"}
+        </span>
+      </button>
 
       {/* Calendar Input */}
       <input
