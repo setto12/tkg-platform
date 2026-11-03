@@ -100,8 +100,10 @@ export default function ReportsPage() {
     });
   }, [selectedDate, viewMode]);
 
-  const totalPresent = attendanceData?.total_present ?? 238;
   const totalStudents = attendanceData?.total_students_count ?? 238;
+  const totalPresent = attendanceData?.total_present ?? 238;
+  const totalAbsent = attendanceData?.total_absent ?? 0;
+  const totalNotAssessed = attendanceData?.total_not_assessed ?? 0;
 
   let attendanceDisplay = `${totalPresent}/${totalStudents}`;
   if (displayMode === "percentage" && totalStudents > 0) {
@@ -149,9 +151,37 @@ export default function ReportsPage() {
             value={loading ? "Loading..." : attendanceDisplay}
           />
           <Card
-            title="Average Exit Ticket Scores"
+            title="Exit Ticket Scores"
             value={loading ? "Loading..." : exitScoreDisplay}
           />
+
+          {/* Insight Card Styled to Match Color Rules (#ffffff card background, #101a2b text) */}
+          <div className="sm:col-span-2 bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-1">
+            <h3 className="text-sm font-bold text-[#101a2b]">
+              Assessment & Session Insight
+            </h3>
+            <p className="text-sm text-slate-600">
+              {loading ? (
+                "Calculating insights..."
+              ) : (
+                <>
+                  Out of{" "}
+                  <span className="font-bold text-[#101a2b]">
+                    {totalStudents}
+                  </span>{" "}
+                  students,{" "}
+                  <span className="font-bold text-[#101a2b]">
+                    {totalAbsent}
+                  </span>{" "}
+                  were absent, and{" "}
+                  <span className="font-bold text-[#101a2b]">
+                    {totalNotAssessed}
+                  </span>{" "}
+                  could not be assessed due to technical difficulties.
+                </>
+              )}
+            </p>
+          </div>
 
           {/* Bottom Container: Standards & Individual Grades */}
           <div className="sm:col-span-2 bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-4">
@@ -168,7 +198,7 @@ export default function ReportsPage() {
                     key={idx}
                     className="border-b border-slate-100 pb-3 last:border-none last:pb-0"
                   >
-                    <p className="text-sm font-semibold text-slate-900">
+                    <p className="text-sm font-semibold text-[#101a2b]">
                       {std.title}
                     </p>
                     <p className="text-xs text-slate-600 mt-0.5">

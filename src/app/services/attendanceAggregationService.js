@@ -9,11 +9,13 @@ function aggregateAttendanceData(rows) {
   let totalStudentsCount = 0;
   let totalPresentCount = 0;
   let totalAbsentCount = 0;
+  let totalNotAssessedCount = 0; // New counter
 
   rows.forEach((row) => {
     const lessonId = row.lesson_id || row.lesson_topic || "unknown_lesson";
     const student = row.student;
     const clientReport = (row.client_report || "").trim().toLowerCase();
+    const studentProgress = (row.student_progress || "").trim().toLowerCase();
 
     if (!lessonMap[lessonId]) {
       lessonMap[lessonId] = {
@@ -23,6 +25,7 @@ function aggregateAttendanceData(rows) {
         students: new Set(),
         present: 0,
         absent: 0,
+        not_assessed: 0,
       };
     }
 
@@ -39,6 +42,12 @@ function aggregateAttendanceData(rows) {
       totalAbsentCount += 1;
     }
 
+    // Count not assessed based on student_progress column
+    if (studentProgress.includes("not assessed")) {
+      lessonMap[lessonId].not_assessed += 1;
+      totalNotAssessedCount += 1;
+    }
+
     if (student) totalStudentsCount += 1;
   });
 
@@ -49,6 +58,7 @@ function aggregateAttendanceData(rows) {
     total_students: lesson.students.size,
     present_count: lesson.present,
     absent_count: lesson.absent,
+    not_assessed_count: lesson.not_assessed,
   }));
 
   return {
@@ -56,13 +66,13 @@ function aggregateAttendanceData(rows) {
     total_students_count: totalStudentsCount,
     total_present: totalPresentCount,
     total_absent: totalAbsentCount,
+    total_not_assessed: totalNotAssessedCount, // Return total count
     lessons_breakdown: lessonsSummary,
   };
 }
 
 /**
  * 1. Get attendance metrics for a specific day
- * @param {string} targetDate - Format 'MM/DD/YYYY' (e.g., '10/27/2026')
  */
 export async function getAttendanceByDay(targetDate) {
   try {
@@ -82,13 +92,7 @@ export async function getAttendanceByDay(targetDate) {
       return datePart === targetDate;
     });
 
-    const aggregated = aggregateAttendanceData(filteredRows);
-
-    console.log(`\n================ DAILY ATTENDANCE TEST ===============`);
-    console.log(`[DAY] Target: ${targetDate} | Unique Lessons: ${aggregated.unique_lessons_count} | Present: ${aggregated.total_present} | Absent: ${aggregated.total_absent}`);
-    console.log(`======================================================\n`);
-
-    return aggregated;
+    return aggregateAttendanceData(filteredRows);
   } catch (err) {
     console.error("Connection error in getAttendanceByDay:", err);
     return null;
@@ -97,7 +101,6 @@ export async function getAttendanceByDay(targetDate) {
 
 /**
  * 2. Get attendance metrics for a 7-day weekly range
- * @param {string} startDateStr - Format 'MM/DD/YYYY' (e.g., '10/27/2026')
  */
 export async function getAttendanceByWeek(startDateStr) {
   try {
@@ -112,7 +115,7 @@ export async function getAttendanceByWeek(startDateStr) {
 
     const [month, day, year] = startDateStr.split("/").map(Number);
     const startDt = new Date(year, month - 1, day);
-    const endDt = new Date(year, month - 1, day + 6); // 7-day span
+    const endDt = new Date(year, month - 1, day + 6);
 
     const filteredRows = (data || []).filter((row) => {
       const lessonStart = row.lesson_start;
@@ -127,13 +130,7 @@ export async function getAttendanceByWeek(startDateStr) {
       }
     });
 
-    const aggregated = aggregateAttendanceData(filteredRows);
-
-    console.log(`\n================ WEEKLY ATTENDANCE TEST ===============`);
-    console.log(`[WEEK] Starting: ${startDateStr} | Unique Lessons: ${aggregated.unique_lessons_count} | Present: ${aggregated.total_present} | Absent: ${aggregated.total_absent}`);
-    console.log(`=======================================================\n`);
-
-    return aggregated;
+    return aggregateAttendanceData(filteredRows);
   } catch (err) {
     console.error("Connection error in getAttendanceByWeek:", err);
     return null;
