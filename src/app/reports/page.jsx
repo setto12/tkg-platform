@@ -8,26 +8,37 @@ import {
   getAttendanceByDay,
   getAttendanceByWeek,
 } from "../services/attendanceAggregationService";
+import {
+  getExitTicketAverageByDay,
+  getExitTicketAverageByWeek,
+} from "../services/exitTicketService";
 
 export default function ReportsPage() {
   const [selectedDate, setSelectedDate] = useState("2026-10-27"); // HTML date format
   const [viewMode, setViewMode] = useState("day"); // 'day' or 'week'
   const [attendanceData, setAttendanceData] = useState(null);
+  const [exitTicketData, setExitTicketData] = useState(null);
   const [loading, startTransition] = useTransition();
 
   useEffect(() => {
     startTransition(async () => {
-      // Convert 'YYYY-MM-DD' to 'MM/DD/YYYY' expected by our service
+      // Convert 'YYYY-MM-DD' to 'MM/DD/YYYY' expected by our services
       const [y, m, d] = selectedDate.split("-");
       const formattedDate = `${m}/${d}/${y}`;
 
-      let data = null;
+      let attData = null;
+      let exitData = null;
+
       if (viewMode === "day") {
-        data = await getAttendanceByDay(formattedDate);
+        attData = await getAttendanceByDay(formattedDate);
+        exitData = await getExitTicketAverageByDay(formattedDate);
       } else {
-        data = await getAttendanceByWeek(formattedDate);
+        attData = await getAttendanceByWeek(formattedDate);
+        exitData = await getExitTicketAverageByWeek(formattedDate);
       }
-      setAttendanceData(data);
+
+      setAttendanceData(attData);
+      setExitTicketData(exitData);
     });
   }, [selectedDate, viewMode]);
 
@@ -38,9 +49,14 @@ export default function ReportsPage() {
     ? "Loading..."
     : `${totalPresent}/${totalStudents}`;
 
+  // Compute dynamic exit ticket score / percentage
+  const exitScoreDisplay = loading
+    ? "Loading..."
+    : (exitTicketData?.averageScore ?? "100%");
+
   const reportMetrics = [
     { id: 1, title: "Attendance", value: attendanceDisplay },
-    { id: 2, title: "Exit Ticket Scores", value: "100%" },
+    { id: 2, title: "Exit Ticket Scores", value: exitScoreDisplay },
   ];
 
   return (
