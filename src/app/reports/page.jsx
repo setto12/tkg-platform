@@ -4,6 +4,8 @@
 import { useState, useEffect, useTransition } from "react";
 import { Card } from "@/components/ui/card";
 import ReportDateSelector from "@/components/ReportDateSelector";
+// Add this inside your ReportsPage component:
+import { useRouter } from "next/navigation";
 
 import {
   getAttendanceByDay,
@@ -23,6 +25,14 @@ import { getAvailableDateBounds } from "../services/reportDateRangeService";
 import ReportStandardsList from "@/components/ReportStandardList";
 
 export default function ReportsPage() {
+  const router = useRouter();
+
+  useEffect(() => {
+    const isAuthorized = sessionStorage.getItem("isAuthorized");
+    if (!isAuthorized) {
+      router.push("/login");
+    }
+  }, [router]);
   const [selectedDate, setSelectedDate] = useState("2026-10-27");
   const [viewMode, setViewMode] = useState("day");
   const [displayMode, setDisplayMode] = useState("percentage");
