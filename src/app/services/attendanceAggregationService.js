@@ -80,10 +80,10 @@ export async function getAttendanceByDay(targetDate) {
       .from("tutor_reports_export")
       .select("*");
 
-    if (error) {
-      console.error("Error fetching daily attendance:", error.message);
-      return null;
-    }
+    // if (error) {
+    //   console.error("Error fetching daily attendance:", error.message);
+    //   return null;
+    // }
 
     const filteredRows = (data || []).filter((row) => {
       const lessonStart = row.lesson_start;
@@ -94,7 +94,7 @@ export async function getAttendanceByDay(targetDate) {
 
     return aggregateAttendanceData(filteredRows);
   } catch (err) {
-    console.error("Connection error in getAttendanceByDay:", err);
+    // console.error("Connection error in getAttendanceByDay:", err);
     return null;
   }
 }
@@ -109,7 +109,7 @@ export async function getAttendanceByWeek(startDateStr) {
       .select("*");
 
     if (error) {
-      console.error("Error fetching weekly attendance:", error.message);
+    //   console.error("Error fetching weekly attendance:", error.message);
       return null;
     }
 
@@ -132,7 +132,7 @@ export async function getAttendanceByWeek(startDateStr) {
 
     return aggregateAttendanceData(filteredRows);
   } catch (err) {
-    console.error("Connection error in getAttendanceByWeek:", err);
+    // console.error("Connection error in getAttendanceByWeek:", err);
     return null;
   }
 }

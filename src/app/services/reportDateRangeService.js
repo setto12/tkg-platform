@@ -46,7 +46,7 @@ export async function getAvailableDateBounds() {
       maxDate: formatDateToYMD(maxDateObj),
     };
   } catch (err) {
-    console.error("Error fetching date bounds:", err);
+    // console.error("Error fetching date bounds:", err);
     return { minDate: "2026-01-01", maxDate: "2026-12-31" };
   }
 }

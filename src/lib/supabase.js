@@ -8,7 +8,7 @@ const supabaseKey =
   "";
 
 if (!supabaseUrl || !supabaseKey) {
-  console.error("Missing Supabase environment variables!");
+//   console.error("Missing Supabase environment variables!");
 }
 
 export const supabase = createClient(supabaseUrl, supabaseKey);

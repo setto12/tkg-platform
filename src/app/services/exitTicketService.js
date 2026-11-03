@@ -59,7 +59,7 @@ export async function getExitTicketAverageByDay(targetDate) {
       .select("*");
 
     if (error) {
-      console.error("Error fetching daily exit tickets:", error.message);
+    //   console.error("Error fetching daily exit tickets:", error.message);
       return null;
     }
 
@@ -71,10 +71,10 @@ export async function getExitTicketAverageByDay(targetDate) {
     });
 
     const summary = calculateExitTicketAverages(filteredRows);
-    console.log(`[EXIT TICKET DAY] Date: ${targetDate} | Avg Score: ${summary.averageScore} | Avg %: ${summary.averagePercentage}`);
+    // console.log(`[EXIT TICKET DAY] Date: ${targetDate} | Avg Score: ${summary.averageScore} | Avg %: ${summary.averagePercentage}`);
     return summary;
   } catch (err) {
-    console.error("Connection error in getExitTicketAverageByDay:", err);
+    // console.error("Connection error in getExitTicketAverageByDay:", err);
     return null;
   }
 }
@@ -90,7 +90,7 @@ export async function getExitTicketAverageByWeek(startDateStr) {
       .select("*");
 
     if (error) {
-      console.error("Error fetching weekly exit tickets:", error.message);
+    //   console.error("Error fetching weekly exit tickets:", error.message);
       return null;
     }
 
@@ -112,10 +112,10 @@ export async function getExitTicketAverageByWeek(startDateStr) {
     });
 
     const summary = calculateExitTicketAverages(filteredRows);
-    console.log(`[EXIT TICKET WEEK] Starting: ${startDateStr} | Avg Score: ${summary.averageScore} | Avg %: ${summary.averagePercentage}`);
+    // console.log(`[EXIT TICKET WEEK] Starting: ${startDateStr} | Avg Score: ${summary.averageScore} | Avg %: ${summary.averagePercentage}`);
     return summary;
   } catch (err) {
-    console.error("Connection error in getExitTicketAverageByWeek:", err);
+    // console.error("Connection error in getExitTicketAverageByWeek:", err);
     return null;
   }
 }

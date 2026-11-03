@@ -12,7 +12,7 @@ export async function getRowsByDay(targetDate) {
       .select("*");
 
     if (error) {
-      console.error("Error fetching rows by day:", error.message);
+    //   console.error("Error fetching rows by day:", error.message);
       return [];
     }
 
@@ -24,16 +24,16 @@ export async function getRowsByDay(targetDate) {
       return datePart === targetDate;
     });
 
-    console.log(`\n================ NEXT.JS CONSOLE LOG TEST ===============`);
-    console.log(`[DAY QUERY] Target Date: ${targetDate} | Matches found: ${filtered.length}`);
+    // console.log(`\n================ NEXT.JS CONSOLE LOG TEST ===============`);
+    // console.log(`[DAY QUERY] Target Date: ${targetDate} | Matches found: ${filtered.length}`);
     if (filtered.length > 0) {
-      console.log(`  -> Sample ID: ${filtered[0].id} | Topic: ${filtered[0].lesson_topic}`);
+    //   console.log(`  -> Sample ID: ${filtered[0].id} | Topic: ${filtered[0].lesson_topic}`);
     }
-    console.log(`=========================================================\n`);
+    // console.log(`=========================================================\n`);
 
     return filtered;
   } catch (err) {
-    console.error("Connection error in getRowsByDay:", err);
+    // console.error("Connection error in getRowsByDay:", err);
     return [];
   }
 }
@@ -49,7 +49,7 @@ export async function getRowsByWeek(startDateStr) {
       .select("*");
 
     if (error) {
-      console.error("Error fetching rows by week:", error.message);
+    //   console.error("Error fetching rows by week:", error.message);
       return [];
     }
 
@@ -70,13 +70,13 @@ export async function getRowsByWeek(startDateStr) {
       }
     });
 
-    console.log(`\n================ NEXT.JS CONSOLE LOG TEST ===============`);
-    console.log(`[WEEK QUERY] Starting: ${startDateStr} (7 days) | Matches found: ${filtered.length}`);
-    console.log(`=========================================================\n`);
+    // console.log(`\n================ NEXT.JS CONSOLE LOG TEST ===============`);
+    // console.log(`[WEEK QUERY] Starting: ${startDateStr} (7 days) | Matches found: ${filtered.length}`);
+    // console.log(`=========================================================\n`);
 
     return filtered;
   } catch (err) {
-    console.error("Connection error in getRowsByWeek:", err);
+    // console.error("Connection error in getRowsByWeek:", err);
     return [];
   }
 }
