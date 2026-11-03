@@ -4,6 +4,7 @@
 import { useState, useEffect, useTransition } from "react";
 import { Card } from "@/components/ui/card";
 import ReportDateSelector from "@/components/ReportDateSelector";
+
 import {
   getAttendanceByDay,
   getAttendanceByWeek,
@@ -19,6 +20,7 @@ import {
 
 import { supabase } from "@/lib/supabase";
 import { getAvailableDateBounds } from "../services/reportDateRangeService";
+import ReportStandardsList from "@/components/ReportStandardList";
 
 export default function ReportsPage() {
   const [selectedDate, setSelectedDate] = useState("2026-10-27");
@@ -145,17 +147,17 @@ export default function ReportsPage() {
       {/* Cards Container */}
       <div className="flex justify-center items-center">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-2xl">
-          {/* Top Row: Attendance & Exit Ticket Scores Cards */}
+          {/* Top Row: Attendance & Average Exit Ticket Scores Cards */}
           <Card
             title="Attendance"
             value={loading ? "Loading..." : attendanceDisplay}
           />
           <Card
-            title="Exit Ticket Scores"
+            title="Average Exit Ticket Scores"
             value={loading ? "Loading..." : exitScoreDisplay}
           />
 
-          {/* Insight Card Styled to Match Color Rules (#ffffff card background, #101a2b text) */}
+          {/* Insight Card Styled to Match Color Rules */}
           <div className="sm:col-span-2 bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-1">
             <h3 className="text-sm font-bold text-[#101a2b]">
               Assessment & Session Insight
@@ -183,36 +185,11 @@ export default function ReportsPage() {
             </p>
           </div>
 
-          {/* Bottom Container: Standards & Individual Grades */}
-          <div className="sm:col-span-2 bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-4">
-            <h2 className="text-lg font-bold text-[#101a2b]">
-              Skill Standards Addressed
-            </h2>
-
-            {loading ? (
-              <p className="text-sm text-slate-500">Loading standards...</p>
-            ) : skillStandards.length > 0 ? (
-              <div className="space-y-3">
-                {skillStandards.map((std, idx) => (
-                  <div
-                    key={idx}
-                    className="border-b border-slate-100 pb-3 last:border-none last:pb-0"
-                  >
-                    <p className="text-sm font-semibold text-[#101a2b]">
-                      {std.title}
-                    </p>
-                    <p className="text-xs text-slate-600 mt-0.5">
-                      {std.description}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-sm text-slate-500">
-                No standards recorded for this period.
-              </p>
-            )}
-          </div>
+          {/* Reusable Sorted Standards Component */}
+          <ReportStandardsList
+            skillStandards={skillStandards}
+            loading={loading}
+          />
         </div>
       </div>
     </div>

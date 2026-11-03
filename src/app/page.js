@@ -5,7 +5,7 @@ import { Table } from "@/components/ui/table";
 export default function Home() {
   const metrics = [
     { id: 1, title: "Student Groups", value: 63 },
-    { id: 2, title: "Students", value: 238 },
+    { id: 2, title: "Students", value: 233 },
     { id: 3, title: "Active Tutors", value: 32 },
     { id: 4, title: "Assigned Groups", value: 63 },
     { id: 5, title: "Unassigned Groups", value: 0 },
@@ -17,11 +17,11 @@ export default function Home() {
   // Sample data simulating student group tracking
   const tableHeaders = ["School", "Groups", "Students", "Assigned", "Unassigned", "Conflicts", "Awaiting iReady"];
   const tableData = [
-    ["Clinton Elementary", "13", "50", "13", "0", "0", "1"],
+    ["Clinton Elementary", "13", "45", "13", "0", "0", "1"],
     ["Jackson Elementary", "20", "76", "20", "0", "0", "6"],
     ["Slaughter Elementary", "30", "112", "30", "0", "0", "6"],
   ];
-  const tableTotal = ["All Schools", "63", "238", "63", "0", "0", "13"];
+  const tableTotal = ["All Schools", "63", "233", "63", "0", "0", "13"];
   return (
     <div className="space-y-8">
       {/* Dashboard Section Header */}
